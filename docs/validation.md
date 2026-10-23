@@ -1,5 +1,15 @@
 # Validation of the downstream skills
 
+## Scope and verification status (2026-10-23)
+
+The project-recorded comparisons below cover three downstream skills and the specifically listed environment checks. They do not establish that all ten skills, the complete pipeline, or the agent's scientific judgments have been independently validated.
+
+A review found that the original `docs/compare_tables.py` could report `IDENTICAL` when an output column was missing or a finite value changed to `NaN`. The comparator has been corrected, with regression tests on synthetic tables. **The original project output tables are not available in this repository, and comparisons that relied on the affected comparator have not yet been rerun with the correction.** The historical results below are retained as reported; they should not be described as newly reconfirmed by this fix. Independently obtained byte-level comparisons are not invalidated by a defect in this numeric table comparator.
+
+To reconfirm an affected result, compare the saved original and skill-generated output tables using the corrected script, record its exit status and diagnostic output, and investigate every difference. An unchanged result alone does not establish scientific correctness; it establishes agreement with the selected reference output under the comparison criteria.
+
+## Previously reported project comparisons
+
 `deseq2-expression`, `dart-diff-m6a` and `m6a-metagene` were written by generalising project scripts that had already been run and audited on an unpublished DART-seq dataset. It has several conditions with edited and control libraries in replicate, and several treated-vs-control comparisons. In the original scripts, group names, comparisons and replicate numbers were hard-coded. In the skills they come from sample sheets.
 
 To check that generalising changed nothing, the skills were re-run on the same inputs with the same parameters, and every output table was compared with the original one. Tables were matched row by row on their key (gene, site or sample). Numeric columns were compared as relative differences, and all other columns had to match exactly. No data from that project is included in this repository.
@@ -34,5 +44,19 @@ Every module-based tool also has a conda build of the same version (fastp, Trimm
 ## How to repeat this on your own data
 
 1. Run the original analysis and the skill on the same inputs, with every parameter set explicitly.
-2. Compare each output table on its key with `docs/compare_tables.py <original> <new> <key> [old:new column renames]`: identical keys, numeric columns within a tolerance, and every other column equal.
+2. Compare each output table on its key with `python3 docs/compare_tables.py <original> <new> <key> [old:new column renames]`. Preserve the complete output and check the exit status; a reported schema, key, missing-value, or numeric mismatch must not be treated as a successful comparison.
 3. For DESeq2, list the samples in the same order as before if exact identity is required.
+
+The CLI retains its default relative tolerance of `1e-6` for finite numeric values. It is not a single acceptance rule for every historical experiment above: some reported environment or sample-order comparisons have larger numerical differences. Such differences require separate, explicitly recorded, step-specific assessment; do not relax a threshold solely to make a comparison pass. For a claim of byte-identical files, use a byte comparison such as `cmp` in addition to any table-level assessment.
+
+Missing or extra columns/keys and unequal values return exit status 1. Duplicate headers or keys, rename collisions, empty or header-only tables, missing key fields, and malformed rows return exit status 2. Both-sided `NaN` and same-sign infinity are considered equal; one-sided `NaN` and other nonfinite mismatches fail. `IDENTICAL` means equality under the documented table-comparison rules, including the existing empty-string/`NA` convention, not byte-for-byte file identity.
+
+## Comparator regression tests
+
+From the repository root, run:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_compare_tables.py' -v
+```
+
+These tests use synthetic CSV/TSV inputs to check the comparator. They do not rerun the genomics pipeline or verify the historical project results.
