@@ -1,0 +1,16 @@
+# Command-line tools for steps 1-4, the dbSNP download and the dart-diff-m6a python steps.
+# Versions = the ones the pipeline was run and validated with (fastqc/multiqc: any recent version).
+name: dartseq-tools
+channels: [conda-forge, bioconda, nodefaults]
+dependencies:
+  - python=3.10
+  - fastqc=0.12.1
+  - multiqc=1.21
+  - fastp=0.23.4
+  - trimmomatic=0.39
+  - star=2.7.11a
+  - samtools=1.19.2
+  - htslib=1.19.1
+  - bcftools=1.19
+  - picard=2.27.5
+  - rsem=1.3.3

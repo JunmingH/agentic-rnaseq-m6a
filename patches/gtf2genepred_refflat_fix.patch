@@ -1,0 +1,98 @@
+--- a/gtf2genepred.pl
++++ b/gtf2genepred.pl
+@@ -6,6 +6,8 @@
+  
+ ### This scripts converts a gtf file to a refFlat file for use in Bullseye
+ ### The GTF file needs to have the following fields: gene_name transcript_id transcript_version
++### Patched copy (fix 1: only the gene-name lines in the main loop changed): genes without gene_name are named by gene_id.
++### fix 2: in addition, cdsStart/cdsEnd = span of the CDS, start_codon and stop_codon features (see FIX 2 below).
+ 
+ $| = 1;
+ 
+@@ -41,9 +43,13 @@
+ while (<$in_fh>){
+     next if $_ =~ /^\#/;
+     my ($chr,$def,$type,$start,$end,$score,$strand,$phase,$group) = split(/\t/, $_);
+-    $group =~ /gene_name\s\"(.+?)\"/;
++    # FIX 1: the original did `$group =~ /gene_name.../; my $name = $1;` - when a line has no gene_name
++    # (Ensembl omits it for unnamed genes) the failed match leaves $1 unchanged, so the transcript got the name of the previous named gene.
++    # Now: gene_name if present, otherwise gene_id.
++    my ($name) = $group =~ /gene_name\s\"(.+?)\"/;
++    ($name) = $group =~ /gene_id\s\"(.+?)\"/ unless defined $name;
++    die "no gene_name and no gene_id in line $.\n" unless defined $name;
+     $start--; #offset
+-    my $name = $1;
+ 
+     if ($type eq "gene"){
+             $genes{$chr}{$name}{'index'}=$index;
+@@ -73,37 +79,14 @@
+             push ( @{$genes{$chr}{$name}{$transcript_id}{'start_list'}},$start );
+             push ( @{$genes{$chr}{$name}{$transcript_id}{'end_list'}},$end );
+         }
+-        if ($type eq "start_codon"){
+-            if($split_start_flag==0){
+-                if($strand eq "+"){
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_start'}=$start;
+-                }else{
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_end'}=$end;
+-                }
+-            }else{
+-                if($strand eq "+" and $start >= $genes{$chr}{$name}{$transcript_id}{'CDS_start'}){
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_start'}=$start;
+-                }elsif($strand eq "-" and $end >= $genes{$chr}{$name}{$transcript_id}{'CDS_end'}){
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_end'}=$end;
+-                }
+-            }
+-            $split_start_flag=1;
+-        }
+-        if ($type eq "stop_codon"){
+-            if($split_stop_flag==0){
+-                if($strand eq "+"){
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_end'}=$end;
+-                }else{
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_start'}=$start;
+-                }
+-            }else{
+-                if($strand eq "+"){
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_end'}=$end if $end >= $genes{$chr}{$name}{$transcript_id}{'CDS_end'};
+-                }else{
+-                    $genes{$chr}{$name}{$transcript_id}{'CDS_start'}=$start if $start >= $genes{$chr}{$name}{$transcript_id}{'CDS_start'};
+-                }
+-            }
+-            $split_stop_flag=1;
++        # FIX 2: the coding region is the span of all CDS, start_codon and stop_codon features of the transcript
++        # (Ensembl CDS features exclude the stop codon; refFlat cdsEnd includes it). The original derived it from start_codon/stop_codon
++        # only, which is wrong for the 8,618 coding transcripts of Ensembl 111 that lack one or both codon features (cds_start_NF / cds_end_NF)
++        # and for codons split over two exons.
++        if ($type eq "CDS" or $type eq "start_codon" or $type eq "stop_codon"){
++            my $h = $genes{$chr}{$name}{$transcript_id};
++            $h->{'cds_min'} = $start if !defined $h->{'cds_min'} or $start < $h->{'cds_min'};
++            $h->{'cds_max'} = $end   if !defined $h->{'cds_max'} or $end   > $h->{'cds_max'};
+         }
+         $last_transcript=$transcript_id;
+     }
+@@ -120,21 +103,13 @@
+             my $strand = $hash_ref->{'strand'};
+             my $TxStart = $hash_ref->{'TxStart'};
+             my $TxEnd = $hash_ref->{'TxEnd'};
+-            my $CDS_start = $hash_ref->{'CDS_start'};
+-            my $CDS_end = $hash_ref->{'CDS_end'};
++            # fix 2: coding transcripts get the CDS span; non-coding keep cdsStart = cdsEnd = txEnd (as before)
++            my $CDS_start = defined $hash_ref->{'cds_min'} ? $hash_ref->{'cds_min'} : $hash_ref->{'CDS_start'};
++            my $CDS_end   = defined $hash_ref->{'cds_max'} ? $hash_ref->{'cds_max'} : $hash_ref->{'CDS_end'};
+             my $exon_count = $hash_ref->{'exon_count'};
+             my @start_list = @{$hash_ref->{'start_list'}};
+             my @end_list = @{$hash_ref->{'end_list'}};
+ 
+-            # case when start codon is define, but not stop codon #
+-
+-            if ( $strand eq "-" and ($CDS_start == $TxEnd and $CDS_end != $TxEnd) ){
+-                    $CDS_start = $TxStart;
+-            }
+-            if ( $strand eq "+" and ($CDS_end == $TxEnd and $CDS_start != $TxEnd) ){
+-                    $CDS_end = $TxEnd;
+-            }
+-            
+ 
+             if ($strand eq "-"){
+                 @start_list=reverse(@start_list);

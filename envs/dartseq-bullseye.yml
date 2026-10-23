@@ -1,0 +1,12 @@
+# Perl + modules for the bundled Bullseye scripts (parseBAM 1.4.4, Find_edit_site 1.5.2, summarize_sites 1.21), plus samtools/tabix.
+name: dartseq-bullseye
+channels: [conda-forge, bioconda, nodefaults]
+dependencies:
+  - perl=5.32
+  - perl-bioperl=1.7.8
+  - perl-mce
+  - perl-array-intspan=2.004
+  - perl-math-cdf=0.1
+  - samtools=1.19.2
+  - htslib=1.19.1
+  - python=3.10

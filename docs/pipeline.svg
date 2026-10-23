@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="930" viewBox="0 0 1280 930" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52606d"/></marker></defs>
+<rect x="0" y="0" width="1280" height="930" rx="0" fill="#ffffff" stroke="#ffffff" stroke-width="1.6"/>
+<text x="640.0" y="34" font-size="20" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">DART-seq m6A + RNA-seq pipeline: AI agent skills on an SGE cluster</text>
+<rect x="8" y="50" width="1264" height="495" rx="14" fill="none" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="6 5"/>
+<text x="30" y="70" font-size="12.5" font-weight="bold" fill="#616e7c" text-anchor="start" font-style="normal">dartseq-pipeline (orchestrator skill): order, decisions, hand-over files, resume / reproduce</text>
+<rect x="40" y="86" width="400" height="44" rx="8" fill="#f5f7fa" stroke="#9aa5b1" stroke-width="1.6"/>
+<text x="240" y="113" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">Raw paired-end fastq (_1 / _2.fq.gz)</text>
+<rect x="470" y="86" width="440" height="44" rx="8" fill="#f5f7fa" stroke="#9aa5b1" stroke-width="1.6"/>
+<text x="690" y="104" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">Reference: ONE Ensembl release</text>
+<text x="690" y="121" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">fasta + GTF, STAR index, RSEM ref, patched refFlat, dbSNP bed</text>
+<rect x="940" y="86" width="300" height="44" rx="8" fill="#f5f7fa" stroke="#9aa5b1" stroke-width="1.6"/>
+<text x="1090" y="104" font-size="13" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">Sample sheets (templates/)</text>
+<text x="1090" y="121" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">groups, control vs treated, comparisons</text>
+<rect x="40" y="250" width="180" height="92" rx="10" fill="#eef4fb" stroke="#4a78b0" stroke-width="1.6"/>
+<text x="130.0" y="272" font-size="13.5" font-weight="bold" fill="#4a78b0" text-anchor="middle" font-style="normal">1  fastqc-qc</text>
+<text x="130.0" y="291" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">FastQC per file</text>
+<text x="130.0" y="306" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">+ MultiQC</text>
+<rect x="260" y="250" width="180" height="92" rx="10" fill="#eef4fb" stroke="#4a78b0" stroke-width="1.6"/>
+<text x="350.0" y="272" font-size="13.5" font-weight="bold" fill="#4a78b0" text-anchor="middle" font-style="normal">2  read-trimming</text>
+<text x="350.0" y="291" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">fastp or Trimmomatic</text>
+<text x="350.0" y="306" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">adapters, poly-G, quality</text>
+<text x="350.0" y="332" font-size="11" font-weight="normal" fill="#b35c00" text-anchor="middle" font-style="italic">decide: tool, MINLEN</text>
+<rect x="480" y="250" width="205" height="92" rx="10" fill="#eef4fb" stroke="#4a78b0" stroke-width="1.6"/>
+<text x="582.5" y="272" font-size="13.5" font-weight="bold" fill="#4a78b0" text-anchor="middle" font-style="normal">3  star-alignment</text>
+<text x="582.5" y="291" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">STAR index + align</text>
+<text x="582.5" y="306" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">sort, Picard duplicates</text>
+<text x="582.5" y="332" font-size="11" font-weight="normal" fill="#b35c00" text-anchor="middle" font-style="italic">decide: RM_DUP, TRANSCRIPTOME</text>
+<rect x="750" y="165" width="190" height="92" rx="10" fill="#edf7ee" stroke="#4f9a5a" stroke-width="1.6"/>
+<text x="845.0" y="187" font-size="13.5" font-weight="bold" fill="#4f9a5a" text-anchor="middle" font-style="normal">4  rsem-quantification</text>
+<text x="845.0" y="206" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">RSEM, control samples</text>
+<text x="845.0" y="221" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">strand test on 1 sample</text>
+<text x="845.0" y="247" font-size="11" font-weight="normal" fill="#b35c00" text-anchor="middle" font-style="italic">decide: STRANDEDNESS</text>
+<rect x="750" y="345" width="190" height="92" rx="10" fill="#f4effa" stroke="#7b5ea7" stroke-width="1.6"/>
+<text x="845.0" y="367" font-size="13.5" font-weight="bold" fill="#7b5ea7" text-anchor="middle" font-style="normal">5  bullseye-analysis</text>
+<text x="845.0" y="386" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">parseBAM, Find_edit_site</text>
+<text x="845.0" y="401" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">edited vs control pairs</text>
+<text x="845.0" y="427" font-size="11" font-weight="normal" fill="#b35c00" text-anchor="middle" font-style="italic">decide: roles, DEDUP, thresholds</text>
+<rect x="985" y="165" width="180" height="92" rx="10" fill="#edf7ee" stroke="#4f9a5a" stroke-width="1.6"/>
+<text x="1075.0" y="187" font-size="13.5" font-weight="bold" fill="#4f9a5a" text-anchor="middle" font-style="normal">6  deseq2-expression</text>
+<text x="1075.0" y="206" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">DESeq2 per comparison</text>
+<text x="1075.0" y="221" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">+ PCA</text>
+<text x="1075.0" y="247" font-size="11" font-weight="normal" fill="#b35c00" text-anchor="middle" font-style="italic">decide: comparisons, subsets</text>
+<rect x="985" y="345" width="180" height="92" rx="10" fill="#f4effa" stroke="#7b5ea7" stroke-width="1.6"/>
+<text x="1075.0" y="367" font-size="13.5" font-weight="bold" fill="#7b5ea7" text-anchor="middle" font-style="normal">7  dart-diff-m6a</text>
+<text x="1075.0" y="386" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">sites in &gt;=2 reps, -dbSNP</text>
+<text x="1075.0" y="401" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">GLM + Wald + IHW</text>
+<text x="1075.0" y="427" font-size="11" font-weight="normal" fill="#b35c00" text-anchor="middle" font-style="italic">decide: cutoffs, RAC</text>
+<rect x="1085" y="462" width="170" height="62" rx="10" fill="#f4effa" stroke="#7b5ea7" stroke-width="1.6"/>
+<text x="1170.0" y="484" font-size="13.5" font-weight="bold" fill="#7b5ea7" text-anchor="middle" font-style="normal">8  m6a-metagene</text>
+<text x="1170.0" y="503" font-size="12" font-weight="normal" fill="#1f2933" text-anchor="middle" font-style="normal">Guitar 5'UTR / CDS / 3'UTR</text>
+<polyline points="130,130 130,250" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<polyline points="350,130 350,250" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="138" y="200" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="start" font-style="normal">raw reads</text>
+<polyline points="600,130 600,250" fill="none" stroke="#52606d" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+<polyline points="845,130 845,165" fill="none" stroke="#52606d" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+<text x="608" y="158" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="start" font-style="normal">reference (also Bullseye refFlat,</text>
+<text x="608" y="172" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="start" font-style="normal">dbSNP filter, Guitar GTF)</text>
+<polyline points="1075,130 1075,165" fill="none" stroke="#52606d" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+<polyline points="220,296 260,296" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="240" y="288" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">QC</text>
+<polyline points="440,296 480,296" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="460" y="288" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">fastq</text>
+<polyline points="685,280 715,280 715,211 750,211" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="710" y="230" font-size="11" font-weight="normal" fill="#4f9a5a" text-anchor="end" font-style="normal">transcriptome</text>
+<text x="710" y="244" font-size="11" font-weight="normal" fill="#4f9a5a" text-anchor="end" font-style="normal">BAM</text>
+<polyline points="685,312 715,312 715,391 750,391" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="710" y="372" font-size="11" font-weight="normal" fill="#7b5ea7" text-anchor="end" font-style="normal">genome BAM</text>
+<text x="710" y="386" font-size="11" font-weight="normal" fill="#7b5ea7" text-anchor="end" font-style="normal">(dups marked)</text>
+<polyline points="940,211 985,211" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="962" y="203" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">counts</text>
+<polyline points="940,391 985,391" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="962" y="383" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">beds +</text>
+<text x="962" y="410" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">matrices</text>
+<polyline points="1075,257 1075,345" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1083" y="305" font-size="11" font-weight="normal" fill="#4f9a5a" text-anchor="start" font-style="normal">DE tables</text>
+<polyline points="1165,391 1185,391 1185,462" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<text x="1192" y="430" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="start" font-style="normal">sites</text>
+<rect x="1185" y="165" width="72" height="150" rx="8" fill="#fbfbfb" stroke="#9aa5b1" stroke-width="1.6" stroke-dasharray="4 3"/>
+<text x="1221" y="185" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">Results</text>
+<text x="1221" y="205" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">QC report</text>
+<text x="1221" y="220" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">DE tables,</text>
+<text x="1221" y="235" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">volcano,</text>
+<text x="1221" y="250" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">PCA</text>
+<text x="1221" y="265" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">diff m6A</text>
+<text x="1221" y="280" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">sites, genes</text>
+<text x="1221" y="295" font-size="10.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">metagene</text>
+<polyline points="1165,211 1185,211" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="40" y="490" width="1030" height="46" rx="10" fill="#fff6e6" stroke="#d08a2e" stroke-width="1.6"/>
+<text x="555" y="509" font-size="13.5" font-weight="bold" fill="#8a4b00" text-anchor="middle" font-style="normal">9  pipeline-audit: after every step</text>
+<text x="555" y="527" font-size="11.5" font-weight="normal" fill="#5c3d00" text-anchor="middle" font-style="normal">read every script, trace each parameter to the tool, check sample placement (R1/R2, control vs edited, reference level), prove with logs + outputs</text>
+<line x1="130" y1="342" x2="130" y2="490" stroke="#d08a2e" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="350" y1="342" x2="350" y2="490" stroke="#d08a2e" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="582" y1="342" x2="582" y2="490" stroke="#d08a2e" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="845" y1="437" x2="845" y2="490" stroke="#d08a2e" stroke-width="1" stroke-dasharray="2 4"/>
+<line x1="1030" y1="437" x2="1030" y2="490" stroke="#d08a2e" stroke-width="1" stroke-dasharray="2 4"/>
+<rect x="40" y="560" width="14" height="14" rx="3" fill="#eef4fb" stroke="#4a78b0" stroke-width="1.6"/>
+<text x="60" y="572" font-size="11.5" font-weight="normal" fill="#616e7c" text-anchor="start" font-style="normal">shared steps</text>
+<rect x="240" y="560" width="14" height="14" rx="3" fill="#edf7ee" stroke="#4f9a5a" stroke-width="1.6"/>
+<text x="260" y="572" font-size="11.5" font-weight="normal" fill="#616e7c" text-anchor="start" font-style="normal">RNA level (control samples)</text>
+<rect x="440" y="560" width="14" height="14" rx="3" fill="#f4effa" stroke="#7b5ea7" stroke-width="1.6"/>
+<text x="460" y="572" font-size="11.5" font-weight="normal" fill="#616e7c" text-anchor="start" font-style="normal">m6A level (edited vs control)</text>
+<text x="650" y="572" font-size="11.5" font-weight="normal" fill="#b35c00" text-anchor="start" font-style="italic">decide: …  = a choice the user makes (the scripts refuse to run without it)</text>
+<text x="30" y="620" font-size="16" font-weight="bold" fill="#1f2933" text-anchor="start" font-style="normal">How every step runs (the same loop for steps 1–8)</text>
+<rect x="22" y="640" width="162" height="78" rx="9" fill="#f5f7fa" stroke="#7b8794" stroke-width="1.6"/>
+<text x="103.0" y="662" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">1  Load the skill</text>
+<text x="103.0" y="684" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">copy scripts/ into the</text>
+<text x="103.0" y="699" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">step folder + MANIFEST.md5</text>
+<polyline points="184,679 202,679" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="202" y="640" width="162" height="78" rx="9" fill="#f5f7fa" stroke="#7b8794" stroke-width="1.6"/>
+<text x="283.0" y="662" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">2  Write run script</text>
+<text x="283.0" y="684" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">run_&lt;step&gt;_&lt;date&gt;.sh sets</text>
+<text x="283.0" y="699" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">every required option</text>
+<polyline points="364,679 382,679" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="382" y="640" width="162" height="78" rx="9" fill="#fff6e6" stroke="#d08a2e" stroke-width="1.6"/>
+<text x="463.0" y="662" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">3  User approves</text>
+<text x="463.0" y="684" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">sample sheet / pairs,</text>
+<text x="463.0" y="699" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">parameters, command</text>
+<polyline points="544,679 562,679" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="562" y="640" width="162" height="78" rx="9" fill="#f5f7fa" stroke="#7b8794" stroke-width="1.6"/>
+<text x="643.0" y="662" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">4  Test 1 sample</text>
+<text x="643.0" y="684" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">check output, runtime,</text>
+<text x="643.0" y="699" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">memory (qacct)</text>
+<polyline points="724,679 742,679" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="742" y="640" width="162" height="78" rx="9" fill="#f5f7fa" stroke="#7b8794" stroke-width="1.6"/>
+<text x="823.0" y="662" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">5  Submit the batch</text>
+<text x="823.0" y="684" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">qsub: one job per sample,</text>
+<text x="823.0" y="699" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">logs kept in error_file/</text>
+<polyline points="904,679 922,679" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="922" y="640" width="162" height="78" rx="9" fill="#fff6e6" stroke="#d08a2e" stroke-width="1.6"/>
+<text x="1003.0" y="662" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">6  Audit the step</text>
+<text x="1003.0" y="684" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">pipeline-audit: code,</text>
+<text x="1003.0" y="699" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">parameters, outputs</text>
+<polyline points="1084,679 1102,679" fill="none" stroke="#52606d" stroke-width="1.6" marker-end="url(#ah)"/>
+<rect x="1102" y="640" width="162" height="78" rx="9" fill="#f5f7fa" stroke="#7b8794" stroke-width="1.6"/>
+<text x="1183.0" y="662" font-size="12.5" font-weight="bold" fill="#1f2933" text-anchor="middle" font-style="normal">7  Record</text>
+<text x="1183.0" y="684" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">update STATUS.md,</text>
+<text x="1183.0" y="699" font-size="11" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">then the next step</text>
+<polyline points="1183.0,718 1183.0,748 103.0,748 103.0,720" fill="none" stroke="#52606d" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ah)"/>
+<text x="643.0" y="764" font-size="11.5" font-weight="normal" fill="#616e7c" text-anchor="middle" font-style="normal">next step   ·   a failed job with a clear cause: delete only its outputs + logs and rerun; unclear: keep logs, report, wait</text>
+<text x="30" y="818" font-size="16" font-weight="bold" fill="#1f2933" text-anchor="start" font-style="normal">What makes a run reproducible</text>
+<circle cx="36" cy="841" r="4" fill="#4a78b0"/>
+<text x="48" y="845" font-size="12.5" font-weight="normal" fill="#1f2933" text-anchor="start" font-style="normal">code frozen per run (script copy + md5)</text>
+<circle cx="456" cy="841" r="4" fill="#4a78b0"/>
+<text x="468" y="845" font-size="12.5" font-weight="normal" fill="#1f2933" text-anchor="start" font-style="normal">no silent defaults for result-changing options</text>
+<circle cx="876" cy="841" r="4" fill="#4a78b0"/>
+<text x="888" y="845" font-size="12.5" font-weight="normal" fill="#1f2933" text-anchor="start" font-style="normal">explicit sample sheets, printed before submit</text>
+<circle cx="36" cy="867" r="4" fill="#4a78b0"/>
+<text x="48" y="871" font-size="12.5" font-weight="normal" fill="#1f2933" text-anchor="start" font-style="normal">all logs kept; seeds fixed (IHW)</text>
+<circle cx="456" cy="867" r="4" fill="#4a78b0"/>
+<text x="468" y="871" font-size="12.5" font-weight="normal" fill="#1f2933" text-anchor="start" font-style="normal">patched Bullseye refFlat; known issues documented</text>
+</svg>

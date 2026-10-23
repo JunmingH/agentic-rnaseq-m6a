@@ -1,0 +1,2 @@
+A (as written by parseBAM --stranded): 1 of 4 sites: 1300+ 
+B (opposite-strand rows removed):      4 of 4 sites: 1100- 1200+ 1300+ 1400- 
